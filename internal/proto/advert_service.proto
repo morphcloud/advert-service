@@ -6,19 +6,12 @@ option go_package = "internal/pb";
 
 import "advert_message.proto";
 import "filter_message.proto";
+import "google/protobuf/empty.proto";
 
 service AdvertService {
-    rpc Create(Advert) returns (AdvertReply) {};
-    rpc Read(Filter) returns (AdvertReply) {};
-    rpc Update(Advert) returns (AdvertReply) {};
-}
-
-message AdvertReply {
-    Advert advert = 1;
-    Error error = 2;
-}
-
-message Error {
-    string code = 1;
-    string message = 2;
+    rpc Create(Advert) returns (Advert) {};
+    rpc Read(Filter) returns (Advert) {};
+    rpc ReadAll(google.protobuf.Empty) returns (stream Advert) {};
+    rpc Update(Advert) returns (Advert) {};
+    rpc Delete(Advert) returns (Advert) {};
 }

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package morphcloud.advert;
+
+option go_package = "internal/pb";
+
+import "advert_message.proto";
+import "filter_message.proto";
+
+service AdvertService {
+    rpc Create(Advert) returns (AdvertReply) {};
+    rpc Read(Filter) returns (AdvertReply) {};
+    rpc Update(Advert) returns (AdvertReply) {};
+}
+
+message AdvertReply {
+    Advert advert = 1;
+    Error error = 2;
+}
+
+message Error {
+    string code = 1;
+    string message = 2;
+}

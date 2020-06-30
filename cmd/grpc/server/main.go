@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
 
 	"github.com/joho/godotenv"
 	"github.com/morphcloud/advert-service/internal/impl"
@@ -27,9 +28,21 @@ func main() {
 	pb.RegisterAdvertServiceServer(grpcServer, advertServiceServer)
 
 	l.Println("Server is running on port " + port)
-	if err := grpcServer.Serve(netListener); err != nil {
-		l.Fatalln(err)
-	}
+
+	go func() {
+		if err := grpcServer.Serve(netListener); err != nil {
+			l.Fatalln(err)
+		}
+	}()
+
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, os.Kill)
+
+	sig := <-sigChan
+	l.Println("Received terminate. Graceful shutdown...", sig)
+
+	grpcServer.GracefulStop()
 }
 
 func getNetListener(port string) net.Listener {

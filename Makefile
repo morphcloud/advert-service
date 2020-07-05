@@ -8,4 +8,4 @@ format:
 	gofmt -w ./..
 
 gen:
-	protoc --proto_path=./internal/proto ./internal/proto/*.proto --go_out=plugins=grpc:. --swagger_out=allow_merge=true:./api/docs/
+	protoc --proto_path=./internal/proto ./internal/proto/*.proto --go_out=plugins=grpc:. --grpc-gateway_out=logtostderr=true:. --swagger_out=allow_merge=true:./api/docs/

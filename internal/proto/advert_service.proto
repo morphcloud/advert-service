@@ -6,12 +6,35 @@ option go_package = "internal/pb";
 
 import "advert_message.proto";
 import "filter_message.proto";
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 service AdvertService {
-    rpc Create(Advert) returns (Advert) {};
-    rpc Read(Filter) returns (Advert) {};
-    rpc ReadAll(google.protobuf.Empty) returns (stream Advert) {};
-    rpc Update(Advert) returns (Advert) {};
-    rpc Delete(Advert) returns (Advert) {};
+    rpc Create(Advert) returns (Advert) {
+        option (google.api.http) = {
+            post: "/v1/adverts"
+            body: "*"
+        };
+    };
+    rpc Read(Filter) returns (Advert) {
+        option (google.api.http) = {
+            get: "/v1/adverts/{id}"
+        };
+    };
+    rpc ReadAll(google.protobuf.Empty) returns (stream Advert) {
+        option (google.api.http) = {
+            get: "/v1/adverts"
+        };
+    };
+    rpc Update(Advert) returns (Advert) {
+        option (google.api.http) = {
+            patch: "/v1/adverts/{id}"
+            body: "*"
+        };
+    };
+    rpc Delete(Advert) returns (Advert) {
+        option (google.api.http) = {
+            delete: "/v1/adverts/{id}"
+        };
+    };
 }
